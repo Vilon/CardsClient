@@ -3,3 +3,8 @@ Assets/StreamingAssets/
 Assets/LuaFramework/ToLua/BaseType/
 luaframework/
 obj/
+Assets/smcs.rsp
+Assets/luaIde.meta
+Assets/smcs.rsp.meta
+Assets/LuaFramework/ToLua/Editor/LuaIde.meta
+Assets/luaIde/
