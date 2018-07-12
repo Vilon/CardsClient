@@ -7,7 +7,6 @@ local util = require "3rd/cjson/util"
 require "Logic/LuaClass"
 require "Logic/CtrlManager"
 require "Common/functions"
-require "Controller/PromptCtrl"
 
 --管理器--
 Game = {};
