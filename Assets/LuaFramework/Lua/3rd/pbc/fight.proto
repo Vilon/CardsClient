@@ -8,7 +8,6 @@ message StartFight
 	  float version = 2;
 }
 
-
 message FightResult
 {
 	  string name = 1;
