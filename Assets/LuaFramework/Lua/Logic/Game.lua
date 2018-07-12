@@ -49,12 +49,11 @@ end
 --测试协同--
 function Game.test_coroutine()    
     logWarn("1111");
-    coroutine.wait(1);	
+    coroutine.wait(0.1);	
     logWarn("2222");
-	
-    local www = WWW("http://bbs.ulua.org/readme.txt");
+    local www = WWW("http://bbs.ulua.org");
     coroutine.www(www);
-    logWarn(www.text);    	
+    log(www.text);     
 end
 
 --测试lpeg--
