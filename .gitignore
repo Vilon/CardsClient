@@ -8,3 +8,8 @@ Assets/luaIde.meta
 Assets/smcs.rsp.meta
 Assets/LuaFramework/ToLua/Editor/LuaIde.meta
 Assets/luaIde/
+IOSProject/
+test.apk
+Assets/doc.xml
+Assets/doc.xml.meta
+RegisterIcalls.cpp

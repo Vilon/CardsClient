@@ -34,7 +34,7 @@ end
 
 --初始化面板--
 function PromptCtrl.InitPanel(objs)
-    local count = 100;
+    local count = 1;
     local parent = PromptPanel.gridParent;
     for i = 1, count do
         local go = newObject(objs[0]);
