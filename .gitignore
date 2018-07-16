@@ -3,6 +3,7 @@ Assets/StreamingAssets/
 Assets/LuaFramework/ToLua/BaseType/
 luaframework/
 obj/
+Library/
 Assets/smcs.rsp
 Assets/luaIde.meta
 Assets/smcs.rsp.meta
@@ -13,3 +14,9 @@ test.apk
 Assets/doc.xml
 Assets/doc.xml.meta
 RegisterIcalls.cpp
+Assembly-CSharp.csproj
+Assembly-CSharp-Editor.csproj
+CardsClient.sln
+.vscode/settings.json
+UnityPackageManager/
+Temp/
