@@ -32,7 +32,6 @@ message PlayerBaseInfo
 	{
 		uint32 PlayerID = 1;
 		string Name = 2;
-
 	}
 
 message LoginSuccessfull
