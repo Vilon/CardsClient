@@ -20,3 +20,5 @@ CardsClient.sln
 .vscode/settings.json
 UnityPackageManager/
 Temp/
+.DS_Store
+.vscode/

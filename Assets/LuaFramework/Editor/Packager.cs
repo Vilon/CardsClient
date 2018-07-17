@@ -13,7 +13,7 @@ public class Packager
     static List<string> paths = new List<string>();
     static List<string> files = new List<string>();
     static List<AssetBundleBuild> maps = new List<AssetBundleBuild>();
-    
+
     ///-----------------------------------------------------------
     static string[] exts = { ".txt", ".xml", ".lua", ".assetbundle", ".json" };
     static bool CanCopy(string ext)
@@ -97,7 +97,6 @@ public class Packager
         string resPath = "Assets/" + AppConst.AssetDir;
         BuildPipeline.BuildAssetBundles(resPath, maps.ToArray(), BuildAssetBundleOptions.None, target);
         BuildFileIndex();
-
         string streamDir = Application.dataPath + "/" + AppConst.LuaTempDir;
         if (Directory.Exists(streamDir)) Directory.Delete(streamDir, true);
         AssetDatabase.Refresh();
@@ -196,9 +195,7 @@ public class Packager
 
         AddBuildMap("prompt" + AppConst.ExtName, "*.prefab", "Assets/LuaFramework/Examples/Builds/Prompt");
         AddBuildMap("message" + AppConst.ExtName, "*.prefab", "Assets/LuaFramework/Examples/Builds/Message");
-
-        AddBuildMap("prompt_asset" + AppConst.ExtName, "*.png", "Assets/LuaFramework/Examples/Textures/Prompt");
-        AddBuildMap("shared_asset" + AppConst.ExtName, "*.png", "Assets/LuaFramework/Examples/Textures/Shared");
+        //BuildPipeline.BuildAssetBundles(AppDataPath + "/StreamingAssets/",BuildAssetBundleOptions.None,BuildTarget.Android);
     }
 
     /// <summary>
@@ -207,7 +204,7 @@ public class Packager
     static void HandleLuaFile()
     {
         string resPath = AppDataPath + "/StreamingAssets/";
-        string luaPath = resPath + "/lua/";
+        string luaPath = resPath + "lua/";
 
         //----------复制Lua文件----------------
         if (!Directory.Exists(luaPath))
@@ -322,10 +319,12 @@ public class Packager
         string args = string.Empty;
         string exedir = string.Empty;
         string currDir = Directory.GetCurrentDirectory();
+        ProcessStartInfo info = new ProcessStartInfo();
         if (Application.platform == RuntimePlatform.WindowsEditor)
         {
             isWin = true;
             luaexe = "luajit.exe";
+            info.FileName = luaexe;
             args = "-b -g " + srcFile + " " + outFile;
             exedir = AppDataPath.Replace("assets", "") + "LuaEncoder/luajit/";
         }
@@ -336,52 +335,14 @@ public class Packager
             args = "-b -g " + srcFile + " " + outFile;
             exedir = AppDataPath.Replace("assets", "") + "LuaEncoder/luajit_mac/";
         }
-        Directory.SetCurrentDirectory(exedir);
-        ProcessStartInfo info = new ProcessStartInfo();
         info.FileName = luaexe;
+        info.WorkingDirectory = exedir;
         info.Arguments = args;
         info.WindowStyle = ProcessWindowStyle.Hidden;
         info.UseShellExecute = isWin;
         info.ErrorDialog = true;
         Util.Log(info.FileName + " " + info.Arguments);
-
         Process pro = Process.Start(info);
         pro.WaitForExit();
-        Directory.SetCurrentDirectory(currDir);
-    }
-
-    [MenuItem("LuaFramework/Build Protobuf-lua-gen File")]
-    public static void BuildProtobufFile()
-    {
-        if (!AppConst.ExampleMode)
-        {
-            UnityEngine.Debug.LogError("若使用编码Protobuf-lua-gen功能，需要自己配置外部环境！！");
-            return;
-        }
-        string dir = AppDataPath + "/Lua/3rd/pblua";
-        paths.Clear(); files.Clear(); Recursive(dir);
-
-        string protoc = "d:/protobuf-2.4.1/src/protoc.exe";
-        string protoc_gen_dir = "\"d:/protoc-gen-lua/plugin/protoc-gen-lua.bat\"";
-
-        foreach (string f in files)
-        {
-            string name = Path.GetFileName(f);
-            string ext = Path.GetExtension(f);
-            if (!ext.Equals(".proto")) continue;
-
-            ProcessStartInfo info = new ProcessStartInfo();
-            info.FileName = protoc;
-            info.Arguments = " --lua_out=./ --plugin=protoc-gen-lua=" + protoc_gen_dir + " " + name;
-            info.WindowStyle = ProcessWindowStyle.Hidden;
-            info.UseShellExecute = true;
-            info.WorkingDirectory = dir;
-            info.ErrorDialog = true;
-            Util.Log(info.FileName + " " + info.Arguments);
-
-            Process pro = Process.Start(info);
-            pro.WaitForExit();
-        }
-        AssetDatabase.Refresh();
     }
 }

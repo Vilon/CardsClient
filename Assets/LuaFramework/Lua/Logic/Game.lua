@@ -26,7 +26,7 @@ end
 --初始化完成，发送链接服务器信息--
 function Game.OnInitOK()
     AppConst.SocketPort = 20000;
-    AppConst.SocketAddress = "127.0.0.1";
+    AppConst.SocketAddress = "192.168.0.2";
     networkMgr:SendConnect();
 
     --注册LuaView--
