@@ -331,17 +331,19 @@ public class Packager
         else if (Application.platform == RuntimePlatform.OSXEditor)
         {
             isWin = false;
-            luaexe = "./luajit";
             args = "-b -g " + srcFile + " " + outFile;
             exedir = AppDataPath.Replace("assets", "") + "LuaEncoder/luajit_mac/";
+            luaexe = exedir + "luajit";
+            info.FileName = luaexe;
         }
-        info.FileName = luaexe;
         info.WorkingDirectory = exedir;
         info.Arguments = args;
         info.WindowStyle = ProcessWindowStyle.Hidden;
         info.UseShellExecute = isWin;
         info.ErrorDialog = true;
         Util.Log(info.FileName + " " + info.Arguments);
+        info.RedirectStandardError = true;
+        info.RedirectStandardOutput = true;
         Process pro = Process.Start(info);
         pro.WaitForExit();
     }
