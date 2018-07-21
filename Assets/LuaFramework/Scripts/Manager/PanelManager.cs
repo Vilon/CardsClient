@@ -4,13 +4,18 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using LuaInterface;
 
-namespace LuaFramework {
-    public class PanelManager : Manager {
+namespace LuaFramework
+{
+    public class PanelManager : Manager
+    {
         private Transform parent;
 
-        Transform Parent {
-            get {
-                if (parent == null) {
+        Transform Parent
+        {
+            get
+            {
+                if (parent == null)
+                {
                     GameObject go = GameObject.FindWithTag("GuiCamera");
                     if (go != null) parent = go.transform;
                 }
@@ -22,13 +27,15 @@ namespace LuaFramework {
         /// ������壬������Դ������
         /// </summary>
         /// <param name="type"></param>
-        public void CreatePanel(string name, LuaFunction func = null) {
+        public void CreatePanel(string name, LuaFunction func = null)
+        {
             string assetName = name + "Panel";
-            string abName = name.ToLower() + AppConst.ExtName;
+            string abName = AppConst.ResDir + "prefabs/ui/page/" + assetName.ToLower() + ".prefab";
             if (Parent.Find(name) != null) return;
 
 #if ASYNC_MODE
-            ResManager.LoadPrefab(abName, assetName, delegate(UnityEngine.Object[] objs) {
+            ResManager.LoadPrefab(abName, assetName, delegate (UnityEngine.Object[] objs)
+            {
                 if (objs.Length == 0) return;
                 GameObject prefab = objs[0] as GameObject;
                 if (prefab == null) return;
@@ -65,7 +72,8 @@ namespace LuaFramework {
         /// �ر����
         /// </summary>
         /// <param name="name"></param>
-        public void ClosePanel(string name) {
+        public void ClosePanel(string name)
+        {
             var panelName = name + "Panel";
             var panelObj = Parent.Find(panelName);
             if (panelObj == null) return;

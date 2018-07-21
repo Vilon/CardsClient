@@ -28,7 +28,6 @@ namespace LuaFramework
         void Init()
         {
             DontDestroyOnLoad(gameObject);  //防止销毁自己
-
             CheckExtractResource(); //释放资源
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
             Application.targetFrameRate = AppConst.GameFrameRate;
@@ -41,7 +40,7 @@ namespace LuaFramework
         {
             bool isExists = Directory.Exists(Util.DataPath) &&
               Directory.Exists(Util.DataPath + "lua/") && File.Exists(Util.DataPath + "files.txt");
-            if (isExists || AppConst.DebugMode)
+            if (isExists)
             {
                 StartCoroutine(OnUpdateResource());
                 return;   //文件已经解压过了，自己可添加检查文件列表逻辑
@@ -145,7 +144,7 @@ namespace LuaFramework
             WWW www = new WWW(listUrl); yield return www;
             if (www.error != null)
             {
-                OnUpdateFailed(string.Empty);
+                OnUpdateFailed(www.error);
                 yield break;
             }
             if (!Directory.Exists(dataPath))
@@ -252,11 +251,19 @@ namespace LuaFramework
         public void OnResourceInited()
         {
 #if ASYNC_MODE
-            ResManager.Initialize(AppConst.AssetDir, delegate ()
+            if (!AppConst.UpdateMode)
             {
-                Debug.Log("Initialize OK!!!");
                 this.OnInitialize();
-            });
+            }
+            else
+            {
+                ResManager.Initialize(AppConst.AssetDir, delegate ()
+                {
+                    Debug.Log("Initialize OK!!!");
+                    this.OnInitialize();
+                });
+            }
+
 #else
             ResManager.Initialize();
             this.OnInitialize();
@@ -273,32 +280,32 @@ namespace LuaFramework
 
             initialize = true;
 
-            //类对象池测试
-            var classObjPool = ObjPoolManager.CreatePool<TestObjectClass>(OnPoolGetElement, OnPoolPushElement);
-            //方法1
-            //objPool.Release(new TestObjectClass("abcd", 100, 200f));
-            //var testObj1 = objPool.Get();
+            // //类对象池测试
+            // var classObjPool = ObjPoolManager.CreatePool<TestObjectClass>(OnPoolGetElement, OnPoolPushElement);
+            // //方法1
+            // //objPool.Release(new TestObjectClass("abcd", 100, 200f));
+            // //var testObj1 = objPool.Get();
 
-            //方法2
-            ObjPoolManager.Release<TestObjectClass>(new TestObjectClass("abcd", 100, 200f));
-            var testObj1 = ObjPoolManager.Get<TestObjectClass>();
+            // //方法2
+            // ObjPoolManager.Release<TestObjectClass>(new TestObjectClass("abcd", 100, 200f));
+            // var testObj1 = ObjPoolManager.Get<TestObjectClass>();
 
-            Debugger.Log("TestObjectClass--->>>" + testObj1.ToString());
+            // Debugger.Log("TestObjectClass--->>>" + testObj1.ToString());
 
-            //游戏对象池测试
-            var prefab = Resources.Load("TestGameObjectPrefab", typeof(GameObject)) as GameObject;
-            var gameObjPool = ObjPoolManager.CreatePool("TestGameObject", 5, 10, prefab);
+            // //游戏对象池测试
+            // var prefab = Resources.Load("TestGameObjectPrefab", typeof(GameObject)) as GameObject;
+            // var gameObjPool = ObjPoolManager.CreatePool("TestGameObject", 5, 10, prefab);
 
-            var gameObj = Instantiate(prefab) as GameObject;
-            gameObj.name = "TestGameObject_01";
-            gameObj.transform.localScale = Vector3.one;
-            gameObj.transform.localPosition = Vector3.zero;
+            // var gameObj = Instantiate(prefab) as GameObject;
+            // gameObj.name = "TestGameObject_01";
+            // gameObj.transform.localScale = Vector3.one;
+            // gameObj.transform.localPosition = Vector3.zero;
 
-            ObjPoolManager.Release("TestGameObject", gameObj);
-            var backObj = ObjPoolManager.Get("TestGameObject");
-            backObj.transform.SetParent(null);
+            // ObjPoolManager.Release("TestGameObject", gameObj);
+            // var backObj = ObjPoolManager.Get("TestGameObject");
+            // backObj.transform.SetParent(null);
 
-            Debug.Log("TestGameObject--->>>" + backObj);
+            // Debug.Log("TestGameObject--->>>" + backObj);
         }
 
         /// <summary>

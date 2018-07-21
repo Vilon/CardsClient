@@ -79,7 +79,6 @@ public class Packager
             Directory.Delete(streamPath, true);
         }
         Directory.CreateDirectory(streamPath);
-        AssetDatabase.Refresh();
 
         maps.Clear();
         if (AppConst.LuaBundleMode)
@@ -90,21 +89,22 @@ public class Packager
         {
             HandleLuaFile();
         }
-        if (AppConst.ExampleMode)
-        {
-            HandleExampleBundle();
-        }
+        HandleResBundle();
         string resPath = "Assets/" + AppConst.AssetDir;
-        BuildPipeline.BuildAssetBundles(resPath, maps.ToArray(), BuildAssetBundleOptions.None, target);
+        BuildPipeline.BuildAssetBundles(resPath, maps.ToArray(), BuildAssetBundleOptions.ChunkBasedCompression, target);
         BuildFileIndex();
         string streamDir = Application.dataPath + "/" + AppConst.LuaTempDir;
         if (Directory.Exists(streamDir)) Directory.Delete(streamDir, true);
         AssetDatabase.Refresh();
     }
 
-    static void AddBuildMap(string bundleName, string pattern, string path)
+    static void AddDirBuildMap(string bundleName, string pattern, string path)
     {
-        string[] files = Directory.GetFiles(path, pattern);
+        string[] files = null;
+        if (string.IsNullOrEmpty(pattern))
+            files = Directory.GetFiles(path);
+        else
+            files = Directory.GetFiles(path, pattern);
         if (files.Length == 0) return;
 
         for (int i = 0; i < files.Length; i++)
@@ -115,6 +115,23 @@ public class Packager
         build.assetBundleName = bundleName;
         build.assetNames = files;
         maps.Add(build);
+    }
+
+    static void AddFileBuildMap(string path)
+    {
+        paths.Clear(); files.Clear();
+        Recursive(path);
+        if (files.Count == 0) return;
+        int n = 0;
+        for (int i = 0; i < files.Count; i++)
+        {
+            AssetBundleBuild build = new AssetBundleBuild();
+            build.assetBundleName = Path.ChangeExtension(files[i], AppConst.ExtName);
+            build.assetNames = new string[] { files[i] };
+            maps.Add(build);
+            UpdateProgress(n++, files.Count, build.assetBundleName);
+        }
+        EditorUtility.ClearProgressBar();
     }
 
     /// <summary>
@@ -160,9 +177,9 @@ public class Packager
             name = "lua/lua_" + name.ToLower() + AppConst.ExtName;
 
             string path = "Assets" + dirs[i].Replace(Application.dataPath, "");
-            AddBuildMap(name, "*.bytes", path);
+            AddDirBuildMap(name, "*.bytes", path);
         }
-        AddBuildMap("lua/lua" + AppConst.ExtName, "*.bytes", "Assets/" + AppConst.LuaTempDir);
+        AddDirBuildMap("lua/lua" + AppConst.ExtName, "*.bytes", "Assets/" + AppConst.LuaTempDir);
 
         //-------------------------------处理非Lua文件----------------------------------
         string luaPath = AppDataPath + "/StreamingAssets/lua/";
@@ -182,20 +199,23 @@ public class Packager
                 File.Copy(f, destfile, true);
             }
         }
-        AssetDatabase.Refresh();
     }
 
     /// <summary>
     /// 处理框架实例包
     /// </summary>
-    static void HandleExampleBundle()
+    static void HandleResBundle()
     {
         string resPath = AppDataPath + "/" + AppConst.AssetDir + "/";
         if (!Directory.Exists(resPath)) Directory.CreateDirectory(resPath);
-
-        AddBuildMap("prompt" + AppConst.ExtName, "*.prefab", "Assets/LuaFramework/Examples/Builds/Prompt");
-        AddBuildMap("message" + AppConst.ExtName, "*.prefab", "Assets/LuaFramework/Examples/Builds/Message");
-        //BuildPipeline.BuildAssetBundles(AppDataPath + "/StreamingAssets/",BuildAssetBundleOptions.None,BuildTarget.Android);
+        AddFileBuildMap(AppConst.ResDir + "Prefabs/");
+        AddFileBuildMap(AppConst.ResDir + "Icons/");
+        AddFileBuildMap(AppConst.ResDir + "Sounds/");
+        var dirs = Directory.GetDirectories(AppConst.ResDir + "Textures/UI");
+        foreach (var dir in dirs)
+        {
+            AddDirBuildMap(dir, string.Empty, dir);
+        }
     }
 
     /// <summary>
@@ -244,7 +264,6 @@ public class Packager
             }
         }
         EditorUtility.ClearProgressBar();
-        AssetDatabase.Refresh();
     }
 
     static void BuildFileIndex()
@@ -290,7 +309,7 @@ public class Packager
         foreach (string filename in names)
         {
             string ext = Path.GetExtension(filename);
-            if (ext.Equals(".meta")) continue;
+            if (ext.Equals(".meta") || ext.Equals(".DS_Store")) continue;
             files.Add(filename.Replace('\\', '/'));
         }
         foreach (string dir in dirs)

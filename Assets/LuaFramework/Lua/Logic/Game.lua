@@ -19,7 +19,7 @@ local WWW = UnityEngine.WWW;
 
 function Game.InitViewPanels()
 	for i = 1, #PanelNames do
-		require ("View/"..tostring(PanelNames[i]))
+        require ("View/"..tostring(PanelNames[i]))
 	end
 end
 
@@ -28,15 +28,9 @@ function Game.OnInitOK()
     AppConst.SocketPort = 20000;
     AppConst.SocketAddress = "192.168.0.2";
     networkMgr:SendConnect();
-
+    
     --注册LuaView--
     this.InitViewPanels();
-
-    this.test_class_func();
-    this.test_cjson_func();
-    this.test_lpeg_func();
-    coroutine.start(this.test_coroutine);
-
     CtrlManager.Init();
     local ctrl = CtrlManager.GetCtrl(CtrlNames.Prompt);
     if ctrl ~= nil then

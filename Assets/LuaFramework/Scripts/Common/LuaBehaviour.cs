@@ -69,8 +69,8 @@ namespace LuaFramework {
         protected void OnDestroy() {
             ClearClick();
 #if ASYNC_MODE
-            string abName = name.ToLower().Replace("panel", "");
-            ResManager.UnloadAssetBundle(abName + AppConst.ExtName);
+            string abName = name.ToLower();
+            ResManager.UnloadAssetBundle(abName);
 #endif
             Util.ClearMemory();
             Debug.Log("~" + name + " was destroy!");
