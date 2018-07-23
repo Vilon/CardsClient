@@ -3,7 +3,6 @@ require "Common/define"
 require "Common/protocal"
 require "Common/functions"
 Event = require 'events'
-require "3rd/pbc/PbTools"
 
 Network = {};
 local this = Network;
@@ -22,7 +21,7 @@ end
 
 --发送消息
 function Network.SendMessage(pb,type,data)
-    local buffer = encode(pb,type,data)
+    local buffer = serialize(pb,type,data)
     networkMgr:SendMessage(buffer);
 end
 
@@ -63,7 +62,7 @@ end
 --PBC登录--
 function Network.TestLoginPbc(bytes)
     log("TestLoginPbc");
-    local msg = decode("login","TocChat" , bytes)
+    local msg = deserialize("login","TocChat" , bytes)
     log(msg.name)
     log(msg.content)
 end

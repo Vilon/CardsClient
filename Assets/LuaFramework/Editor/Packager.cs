@@ -366,4 +366,34 @@ public class Packager
         Process pro = Process.Start(info);
         pro.WaitForExit();
     }
+
+    [MenuItem("LuaFramework/Build Protobuf-lua-gen File")]
+    public static void BuildProtobufFile()
+    {
+        string dir = AppConst.FrameworkRoot + "/Lua/3rd/pblua";
+        paths.Clear(); files.Clear(); Recursive(dir);
+
+        string protoc = "/usr/local/Cellar/protobuf@2.5/2.5.0/bin/protoc";
+        string protoc_gen_dir = dir + "/";
+
+        foreach (string f in files)
+        {
+            string name = Path.GetFileName(f);
+            string ext = Path.GetExtension(f);
+            if (!ext.Equals(".proto")) continue;
+
+            ProcessStartInfo info = new ProcessStartInfo();
+            info.FileName = protoc;
+            info.Arguments = "--lua_out=./ *.proto";
+            info.WindowStyle = ProcessWindowStyle.Hidden;
+            info.UseShellExecute = false;
+            info.WorkingDirectory = dir;
+            info.ErrorDialog = true;
+            Util.Log(info.FileName + " " + info.Arguments);
+
+            Process pro = Process.Start(info);
+            pro.WaitForExit();
+        }
+        AssetDatabase.Refresh();
+    }
 }
