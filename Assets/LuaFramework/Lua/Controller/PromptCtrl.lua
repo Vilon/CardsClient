@@ -1,5 +1,6 @@
 require "Common/define"
-require "3rd/pblua/person_pb"
+require "Protol.person_pb"
+require "Protol.login_pb"
 
 PromptCtrl = {}
 local this = PromptCtrl
@@ -66,28 +67,39 @@ function PromptCtrl.TestSendPbc()
         name = "Alice",
         content = "12345"
     }
-    Network.SendMessage("login", "TosChat", TosChat)
+    local chat = Protol.login_pb.TosChat();
+    chat.name = "Alice"
+    chat.content = "1235342"
+    local msg = chat:SerializeToString()
+    local buffer = ByteBuffer.New();
+    buffer:WriteShort(Protocal.TosChat)
+    buffer:WriteBuffer(msg)
+    networkMgr:SendMessage(buffer)
+    --Network.SendMessage("login", "TosChat", TosChat)
 end
 
 function PromptCtrl.TestPbc()
-    local person = person_pb.Person()
+    local person = Protol.person_pb.Person()
     person.id = 1000
     person.name = "Alice"
+    person.home.address = 12
     person.email = "Alice@example.com"
-
-    local home = person.Extensions[person_pb.Phone.phones]:add()
+    local home = person.Extensions[Protol.person_pb.Phone.phones]:add()
     home.num = "2147483647"
-    home.type = person_pb.Phone.HOME
+    home.type = Protol.person_pb.Phone.HOME
 
     local data = person:SerializeToString()
 
-    local msg = person_pb.Person()
+    local msg = Protol.person_pb.Person()
 
     msg:ParseFromString(data)
-    print(msg.id)
-    print(msg.name)
-    print(msg.email)
-    print(msg.Extensions[person.Phone.phones])
+    -- print(msg.id)
+    -- print(msg.name)
+    -- print(msg.email)
+    print(tostring(msg))
+    -- for i,v in ipairs(msg.Extensions[person_pb.Phone.phones]) do
+    --     print(i,v.num)
+    -- end
 end
 --关闭事件--
 function PromptCtrl.Close()
