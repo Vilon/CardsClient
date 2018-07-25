@@ -57,6 +57,7 @@ end
 
 --单击事件--
 function PromptCtrl.OnClick(go)
+    Sound.PlayEffect("Click")
     this.TestSendPbc()
     logWarn("OnClick---->>>" .. go.name)
 end
@@ -67,7 +68,7 @@ function PromptCtrl.TestSendPbc()
         name = "Alice",
         content = "12345"
     }
-    local chat = loginpb.TosChat();
+    local chat = loginpb.TosChat()
     chat.name = "Alice"
     chat.content = "1235342"
     Network.SendMessage(ProtoType.TosChat, chat)

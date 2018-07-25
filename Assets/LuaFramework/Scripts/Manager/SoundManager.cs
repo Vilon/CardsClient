@@ -81,7 +81,7 @@ namespace LuaFramework
             LoadAudioClip(path, (args) =>
             {
                 if (args != null)
-                    AudioSource.PlayClipAtPoint(args, position);
+                    AudioSource.PlayClipAtPoint(args, position,1);
             });
         }
     }

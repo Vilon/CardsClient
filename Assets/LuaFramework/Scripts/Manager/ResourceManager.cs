@@ -129,9 +129,9 @@ namespace LuaFramework
         {
             if (!AppConst.UpdateMode)
             {
-                GameObject prefab = null;
+                UObject prefab = null;
 #if UNITY_EDITOR
-                prefab = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>(abName);
+                prefab = UnityEditor.AssetDatabase.LoadAssetAtPath<T>(abName);
 #endif
                 if (action != null)
                 {

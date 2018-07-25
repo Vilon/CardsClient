@@ -217,6 +217,7 @@ GameObject:
   - component: {fileID: 379554410}
   - component: {fileID: 379554409}
   - component: {fileID: 379554408}
+  - component: {fileID: 379554407}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -224,6 +225,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!81 &379554407
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 379554406}
+  m_Enabled: 1
 --- !u!114 &379554408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -279,7 +287,6 @@ GameObject:
   - component: {fileID: 1101727798}
   - component: {fileID: 1101727797}
   - component: {fileID: 1101727796}
-  - component: {fileID: 1101727794}
   m_Layer: 0
   m_Name: GuiCamera
   m_TagString: GuiCamera
@@ -287,13 +294,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1101727794
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1101727793}
-  m_Enabled: 1
 --- !u!124 &1101727796
 Behaviour:
   m_ObjectHideFlags: 0
