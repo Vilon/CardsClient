@@ -1,6 +1,6 @@
 require "Common/define"
-require "Protol.person_pb"
-require "Protol.login_pb"
+personpb = require "Protol.person_pb"
+loginpb = require "Protol.login_pb"
 
 PromptCtrl = {}
 local this = PromptCtrl
@@ -67,30 +67,25 @@ function PromptCtrl.TestSendPbc()
         name = "Alice",
         content = "12345"
     }
-    local chat = Protol.login_pb.TosChat();
+    local chat = loginpb.TosChat();
     chat.name = "Alice"
     chat.content = "1235342"
-    local msg = chat:SerializeToString()
-    local buffer = ByteBuffer.New();
-    buffer:WriteShort(Protocal.TosChat)
-    buffer:WriteBuffer(msg)
-    networkMgr:SendMessage(buffer)
-    --Network.SendMessage("login", "TosChat", TosChat)
+    Network.SendMessage(ProtoType.TosChat, chat)
 end
 
 function PromptCtrl.TestPbc()
-    local person = Protol.person_pb.Person()
+    local person = personpb.Person()
     person.id = 1000
     person.name = "Alice"
     person.home.address = 12
     person.email = "Alice@example.com"
-    local home = person.Extensions[Protol.person_pb.Phone.phones]:add()
+    local home = person.Extensions[personpb.Phone.phones]:add()
     home.num = "2147483647"
-    home.type = Protol.person_pb.Phone.HOME
+    home.type = personpb.Phone.HOME
 
     local data = person:SerializeToString()
 
-    local msg = Protol.person_pb.Person()
+    local msg = personpb.Person()
 
     msg:ParseFromString(data)
     -- print(msg.id)

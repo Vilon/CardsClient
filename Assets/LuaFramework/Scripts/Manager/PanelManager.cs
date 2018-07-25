@@ -30,7 +30,7 @@ namespace LuaFramework
         public void CreatePanel(string name, LuaFunction func = null)
         {
             string assetName = name + "Panel";
-            string abName = AppConst.ResDir + "prefabs/ui/page/" + assetName.ToLower() + ".prefab";
+            string abName = AppConst.ResDir + "Prefabs/UI/Page/" + assetName + ".prefab";
             if (Parent.Find(name) != null) return;
 
 #if ASYNC_MODE

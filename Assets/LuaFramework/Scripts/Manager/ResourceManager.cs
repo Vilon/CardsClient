@@ -69,6 +69,30 @@ namespace LuaFramework
             LoadAsset<GameObject>(abName, assetNames, null, func);
         }
 
+        public void LoadPrefab(string resName, LuaFunction func)
+        {
+            var assets = new string[] { Path.GetFileNameWithoutExtension(resName) };
+            LoadAsset<GameObject>(resName, assets, null, func);
+        }
+
+        public void LoadSound(string resName, LuaFunction func)
+        {
+            var assets = new string[] { Path.GetFileNameWithoutExtension(resName) };
+            LoadAsset<AudioClip>(resName, assets, null, func);
+        }
+
+        public void LoadSound(string resName, Action<UObject[]> func)
+        {
+            var assets = new string[] { Path.GetFileNameWithoutExtension(resName) };
+            LoadAsset<AudioClip>(resName, assets, func, null);
+        }
+
+        public void LoadSprite(string resName, LuaFunction func)
+        {
+            var assets = new string[] { Path.GetFileNameWithoutExtension(resName) };
+            LoadAsset<Sprite>(resName, assets, null, func);
+        }
+
         string GetRealAssetPath(string abName)
         {
             if (abName.Equals(AppConst.AssetDir))
