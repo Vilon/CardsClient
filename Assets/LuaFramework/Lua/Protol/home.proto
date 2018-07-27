@@ -1,0 +1,5 @@
+syntax = "proto2";
+package msg;
+message Home {
+  required int32 address = 1;
+}
