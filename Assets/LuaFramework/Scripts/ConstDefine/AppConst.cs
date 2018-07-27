@@ -20,8 +20,8 @@ namespace LuaFramework
                 return updateMode;
             }
         }
-        public const bool LuaByteMode = true;                       //Lua字节码模式-默认关闭 
-        public const bool LuaBundleMode = false;                    //Lua代码AssetBundle模式
+        public static bool LuaByteMode = true;                       //Lua字节码模式-默认关闭 
+        public static bool LuaBundleMode = false;                    //Lua代码AssetBundle模式
 
         public const int TimerInterval = 1;
         public const int GameFrameRate = 30;                        //游戏帧频

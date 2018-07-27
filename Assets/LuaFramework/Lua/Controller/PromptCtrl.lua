@@ -18,7 +18,7 @@ end
 
 function PromptCtrl.Awake()
     logWarn("PromptCtrl.Awake--->>")
-    panelMgr:CreatePanel("Prompt", this.OnCreate)
+    uiMgr:PushPage("Prompt")
     this.TestPbc()
 end
 

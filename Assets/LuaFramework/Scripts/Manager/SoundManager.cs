@@ -71,6 +71,11 @@ namespace LuaFramework
              });
         }
 
+        public void PlayVoice(AudioClip clip)
+        {
+            voiceAudio.Play();
+        }
+
         /// <summary>
         /// 播放音频剪辑
         /// </summary>

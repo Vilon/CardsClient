@@ -7,13 +7,11 @@ namespace LuaFramework
     public class LuaManager : Manager
     {
         private LuaState lua;
-        private LuaLoader loader;
         private LuaLooper loop = null;
 
         // Use this for initialization
         void Awake()
         {
-            loader = new LuaLoader();
             lua = new LuaState();
             this.OpenLibs();
             lua.LuaSetTop(0);
@@ -119,7 +117,6 @@ namespace LuaFramework
 
             lua.Dispose();
             lua = null;
-            loader = null;
         }
     }
 }

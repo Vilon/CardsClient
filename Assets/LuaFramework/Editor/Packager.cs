@@ -281,7 +281,6 @@ public class Packager
         for (int i = 0; i < files.Count; i++)
         {
             string file = files[i];
-            string ext = Path.GetExtension(file);
             if (file.EndsWith(".meta") || file.Contains(".DS_Store")) continue;
 
             string md5 = Util.md5file(file);
@@ -337,7 +336,6 @@ public class Packager
         string luaexe = string.Empty;
         string args = string.Empty;
         string exedir = string.Empty;
-        string currDir = Directory.GetCurrentDirectory();
         ProcessStartInfo info = new ProcessStartInfo();
         if (Application.platform == RuntimePlatform.WindowsEditor)
         {
@@ -374,11 +372,9 @@ public class Packager
         paths.Clear(); files.Clear(); Recursive(dir);
 
         string protoc = "/usr/local/Cellar/protobuf@2.5/2.5.0/bin/protoc";
-        string protoc_gen_dir = dir + "/";
 
         foreach (string f in files)
         {
-            string name = Path.GetFileName(f);
             string ext = Path.GetExtension(f);
             if (!ext.Equals(".proto")) continue;
 

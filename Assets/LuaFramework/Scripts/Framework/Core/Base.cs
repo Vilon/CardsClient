@@ -12,6 +12,7 @@ public class Base : MonoBehaviour {
     private TimerManager m_TimerMgr;
     private ThreadManager m_ThreadMgr;
     private ObjectPoolManager m_ObjectPoolMgr;
+    private UIManager m_UIMgr;
 
     /// <summary>
     /// 注册消息
@@ -57,6 +58,15 @@ public class Base : MonoBehaviour {
                 m_ResMgr = facade.GetManager<ResourceManager>(ManagerName.Resource);
             }
             return m_ResMgr;
+        }
+    }
+
+     protected UIManager uiManager {
+        get {
+            if (m_UIMgr == null) {
+                m_UIMgr = facade.GetManager<UIManager>(ManagerName.UI);
+            }
+            return m_UIMgr;
         }
     }
 

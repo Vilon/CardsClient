@@ -5,7 +5,7 @@ CtrlNames = {
 }
 
 PanelNames = {
-	"PromptPanel",	
+	"PromptPage",	
 	"MessagePanel",
 }
 
@@ -15,7 +15,7 @@ LuaHelper = LuaFramework.LuaHelper;
 ByteBuffer = LuaFramework.ByteBuffer;
 
 resMgr = LuaHelper.GetResManager();
-panelMgr = LuaHelper.GetPanelManager();
+uiMgr = LuaHelper.GetUIManager();
 soundMgr = LuaHelper.GetSoundManager();
 networkMgr = LuaHelper.GetNetManager();
 

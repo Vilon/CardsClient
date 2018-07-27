@@ -25,8 +25,8 @@ namespace LuaFramework {
         /// <summary>
         /// 面板管理器
         /// </summary>
-        public static PanelManager GetPanelManager() {
-            return AppFacade.Instance.GetManager<PanelManager>(ManagerName.Panel);
+        public static UIManager GetUIManager() {
+            return AppFacade.Instance.GetManager<UIManager>(ManagerName.UI);
         }
 
         /// <summary>
