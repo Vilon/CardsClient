@@ -60,7 +60,12 @@ public static class CustomSettings
         //_GT(typeof(TestExport)),
         //_GT(typeof(TestExport.Space)),
         //-------------------------------------------------------------------        
-                        
+        
+        //lua debug
+        _GT(typeof(LuaDebugTool)),
+        _GT(typeof(LuaValueInfo)),     
+
+
         _GT(typeof(LuaInjectionStation)),
         _GT(typeof(InjectType)),
         _GT(typeof(Debugger)).SetNameSpace(null),          

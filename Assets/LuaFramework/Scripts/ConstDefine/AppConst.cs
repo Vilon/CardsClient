@@ -32,7 +32,7 @@ namespace LuaFramework
         public const string AppPrefix = AppName + "_";              //应用程序前缀
         public const string ExtName = ".unity3d";                   //素材扩展名
         public const string AssetDir = "StreamingAssets";           //素材目录 
-        public const string WebUrl = "http://192.168.0.6/";      //测试更新地址
+        public const string WebUrl = "http://192.168.0.4/";      //测试更新地址
 
         public static string UserId = string.Empty;                 //用户ID
         public static int SocketPort = 0;                           //Socket服务器端口

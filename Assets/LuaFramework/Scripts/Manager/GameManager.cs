@@ -273,6 +273,9 @@ namespace LuaFramework
         void OnInitialize()
         {
             LuaManager.InitStart();
+#if DEBUG
+            LuaManager.DoFile("3rd/luaideDebug");
+#endif
             LuaManager.DoFile("Logic/Game");         //加载游戏
             LuaManager.DoFile("Logic/Network");      //加载网络
             LuaManager.DoFile("Logic/Sound");        //加载声音模块

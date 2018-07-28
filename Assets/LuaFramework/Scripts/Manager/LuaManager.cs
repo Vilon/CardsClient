@@ -70,6 +70,12 @@ namespace LuaFramework
             lua.OpenLibs(LuaDLL.luaopen_socket_core);
 
             this.OpenCJson();
+#if DEBUG
+            //luaide socket 开启
+            lua.OpenLibs(LuaDLL.luaopen_socket_core);
+            this.OpenLuaSocket();
+            //end luaide  
+#endif
         }
 
         /// <summary>
@@ -112,5 +118,23 @@ namespace LuaFramework
             lua.Dispose();
             lua = null;
         }
+
+        #region luaide 调试库添加
+        //如果项目中没有luasocket 请打开
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int LuaOpen_Socket_Core(System.IntPtr L)
+        {
+            return LuaDLL.luaopen_socket_core(L);
+        }
+
+        protected void OpenLuaSocket()
+        {
+            LuaConst.openLuaSocket = true;
+            lua.BeginPreLoad();
+            lua.RegFunction("socket.core", LuaOpen_Socket_Core);
+            lua.EndPreLoad();
+        }
+        #endregion
+
     }
 }
