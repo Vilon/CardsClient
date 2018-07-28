@@ -18,17 +18,16 @@ end
 
 function PromptCtrl.Awake()
     logWarn("PromptCtrl.Awake--->>")
-    uiMgr:PushPage("Prompt")
+    uiMgr:PushPage("Prompt",this.OnCreate)
     this.TestPbc()
 end
 
 --启动事件--
 function PromptCtrl.OnCreate(obj)
-    gameObject = obj
+    gameObject = obj.gameObject
     transform = obj.transform
-    panel = transform:GetComponent("UIPanel")
-    prompt = transform:GetComponent("LuaBehaviour")
-    prompt:AddClick(PromptPanel.btnOpen, this.OnClick)
+    prompt = obj;
+    obj:AddClick(PromptPage.btnOpen, this.OnClick)
     resMgr:LoadPrefab(AppConst.ResDir .. "prefabs/ui/page/promptitem.prefab", {"PromptItem"}, this.InitPanel)
 end
 
@@ -36,7 +35,7 @@ end
 function PromptCtrl.InitPanel(objs)
     print(objs[0].name)
     local count = 1000
-    local parent = PromptPanel.gridParent
+    local parent = PromptPage.gridParent
     for i = 1, count do
         local go = newObject(objs[0])
         go.name = "Item" .. tostring(i)

@@ -365,7 +365,7 @@ namespace LuaInterface
         }
 
         //慎用, 有gc alloc
-        //[System.Obsolete("LuaFunction.LazyCall() is obsolete.Use LuaFunction.Invoke()")]
+        [System.Obsolete("LuaFunction.LazyCall() is obsolete.Use LuaFunction.Invoke()")]
         public object[] LazyCall(params object[] args)
         {
             BeginPCall();

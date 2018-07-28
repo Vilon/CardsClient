@@ -34,20 +34,12 @@ namespace LuaFramework
 
         public void OnInit()
         {
-            CallMethod("Start");
+            Util.CallMethod("Network", "Start");
         }
 
         public void Unload()
         {
-            CallMethod("Unload");
-        }
-
-        /// <summary>
-        /// ִ��Lua����
-        /// </summary>
-        public object[] CallMethod(string func, params object[] args)
-        {
-            return Util.CallMethod("Network", func, args);
+            Util.CallMethod("Network", "Unload");
         }
 
         ///------------------------------------------------------------------------------------

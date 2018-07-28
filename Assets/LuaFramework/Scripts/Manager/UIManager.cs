@@ -136,7 +136,7 @@ namespace LuaFramework
             ActivePage.OnPageActivated();
         }
 
-        public virtual void PushPage(string page)
+        public virtual void PushPage(string page, LuaFunction callback = null)
         {
             OpenPage(page, (openedPage) =>
             {
@@ -146,6 +146,7 @@ namespace LuaFramework
                 {
                     SetActivePage(openedPage);
                 }
+                if (callback != null) callback.Call(openedPage);
             });
         }
 

@@ -15,7 +15,6 @@ end
 
 --初始化面板--
 function PromptPage.InitPanel()
-	logError("PromptPage.InitPanel")
 	this.btnOpen = transform:Find("Open").gameObject;
 	print(this.btnOpen.name)
 	this.gridParent = transform:Find('ScrollView/Grid');
