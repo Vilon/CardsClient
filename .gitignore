@@ -22,3 +22,5 @@ UnityPackageManager/
 Temp/
 .DS_Store
 .vscode/
+LuaDebug.lua
+LuaDebugjit.lua
