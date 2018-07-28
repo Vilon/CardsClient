@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using LuaInterface;
 using System.Reflection;
 using System.IO;
-
+using UnityEngine.SceneManagement;
 
 namespace LuaFramework
 {
@@ -29,6 +29,7 @@ namespace LuaFramework
         {
             DontDestroyOnLoad(gameObject);  //防止销毁自己
             CheckExtractResource(); //释放资源
+
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
             Application.targetFrameRate = AppConst.GameFrameRate;
         }
@@ -57,6 +58,11 @@ namespace LuaFramework
             Directory.CreateDirectory(dataPath);
 
             string infile = resPath + "files.txt";
+            if(!File.Exists(infile))
+            {
+                StartCoroutine(OnUpdateResource());
+                yield break;
+            }
             string outfile = dataPath + "files.txt";
             if (File.Exists(outfile)) File.Delete(outfile);
 
@@ -272,18 +278,24 @@ namespace LuaFramework
 
         void OnInitialize()
         {
-            LuaManager.InitStart();
+            SceneManager.sceneLoaded += (scene, mode) =>
+            {
+                if (scene.name == "main")
+                {
+                    LuaManager.InitStart();
 #if DEBUG
-            LuaManager.DoFile("3rd/luaideDebug");
+                    LuaManager.DoFile("3rd/luadebug/luaideDebug");
 #endif
-            LuaManager.DoFile("Logic/Game");         //加载游戏
-            LuaManager.DoFile("Logic/Network");      //加载网络
-            LuaManager.DoFile("Logic/Sound");        //加载声音模块
-            NetManager.OnInit();                     //初始化网络
-            Util.CallMethod("Game", "OnInitOK");     //初始化完成
+                    LuaManager.DoFile("Logic/Game");         //加载游戏
+                    LuaManager.DoFile("Logic/Network");      //加载网络
+                    LuaManager.DoFile("Logic/Sound");        //加载声音模块
+                    NetManager.OnInit();                     //初始化网络
+                    Util.CallMethod("Game", "OnInitOK");     //初始化完成
 
-            initialize = true;
-
+                    initialize = true;
+                }
+            };
+            SceneManager.LoadScene("main", LoadSceneMode.Single);
             // //类对象池测试
             // var classObjPool = ObjPoolManager.CreatePool<TestObjectClass>(OnPoolGetElement, OnPoolPushElement);
             // //方法1

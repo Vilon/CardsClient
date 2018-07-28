@@ -320,21 +320,21 @@ namespace LuaFramework
         public static int CheckRuntimeFile()
         {
             if (!Application.isEditor) return 0;
-            string streamDir = Application.dataPath + "/StreamingAssets/";
-            if (!Directory.Exists(streamDir))
-            {
-                return -1;
-            }
-            else
-            {
-                string[] files = Directory.GetFiles(streamDir);
-                if (files.Length == 0) return -1;
+            // string streamDir = Application.dataPath + "/StreamingAssets/";
+            // if (!Directory.Exists(streamDir))
+            // {
+            //     return -1;
+            // }
+            // else
+            // {
+            //     string[] files = Directory.GetFiles(streamDir);
+            //     if (files.Length == 0) return -1;
 
-                if (!File.Exists(streamDir + "files.txt"))
-                {
-                    return -1;
-                }
-            }
+            //     if (!File.Exists(streamDir + "files.txt"))
+            //     {
+            //         return -1;
+            //     }
+            // }
             string sourceDir = AppConst.FrameworkRoot + "/ToLua/Source/Generate/";
             if (!Directory.Exists(sourceDir))
             {

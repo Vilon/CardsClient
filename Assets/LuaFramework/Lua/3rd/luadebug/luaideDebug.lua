@@ -1,5 +1,5 @@
 --luaide debug
-local breakSocketHandle, debugXpCall = require("LuaDebug")("localhost", 7003)
+local breakSocketHandle, debugXpCall = require("3rd/luadebug/LuaDebug")("localhost", 7003)
 local timer =
     Timer.New(
     function()
