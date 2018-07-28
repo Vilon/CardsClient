@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class AppView : View
 {
-    private string message;
+    private ProgressData data;
     private Text text;
     private Slider slider;
     ///<summary>
@@ -18,8 +18,6 @@ public class AppView : View
             return new List<string>()
             {
                 NotiConst.UPDATE_MESSAGE,
-                NotiConst.UPDATE_EXTRACT,
-                NotiConst.UPDATE_DOWNLOAD,
                 NotiConst.UPDATE_PROGRESS,
             };
         }
@@ -35,7 +33,11 @@ public class AppView : View
 
     private void Update()
     {
-        text.text = message;
+        if (data != null)
+        {
+            text.text = data.message;
+            slider.value = data.value;
+        }
     }
 
     /// <summary>
@@ -49,13 +51,7 @@ public class AppView : View
         switch (name)
         {
             case NotiConst.UPDATE_MESSAGE:      //更新消息
-                UpdateMessage(body.ToString());
-                break;
-            case NotiConst.UPDATE_EXTRACT:      //更新解压
-                UpdateExtract(body.ToString());
-                break;
-            case NotiConst.UPDATE_DOWNLOAD:     //更新下载
-                UpdateDownload(body.ToString());
+                UpdateMessage(body as ProgressData);
                 break;
             case NotiConst.UPDATE_PROGRESS:     //更新下载进度
                 UpdateProgress(body.ToString());
@@ -63,23 +59,14 @@ public class AppView : View
         }
     }
 
-    public void UpdateMessage(string data)
+    public void UpdateMessage(ProgressData data)
     {
-        this.message = data;
-    }
+        this.data = data;
 
-    public void UpdateExtract(string data)
-    {
-        this.message = data;
-    }
-
-    public void UpdateDownload(string data)
-    {
-        this.message = data;
     }
 
     public void UpdateProgress(string data)
     {
-        this.message = data;
+
     }
 }

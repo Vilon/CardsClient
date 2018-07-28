@@ -58,7 +58,7 @@ namespace LuaFramework
             Directory.CreateDirectory(dataPath);
 
             string infile = resPath + "files.txt";
-            if(!File.Exists(infile))
+            if (!File.Exists(infile))
             {
                 StartCoroutine(OnUpdateResource());
                 yield break;
@@ -66,7 +66,7 @@ namespace LuaFramework
             string outfile = dataPath + "files.txt";
             if (File.Exists(outfile)) File.Delete(outfile);
 
-            string message = "正在解包文件:>files.txt";
+            string message = "正在解包:files.txt";
             Debug.Log(infile);
             Debug.Log(outfile);
             if (Application.platform == RuntimePlatform.Android)
@@ -85,17 +85,18 @@ namespace LuaFramework
 
             //释放所有文件到数据目录
             string[] files = File.ReadAllLines(outfile);
-            foreach (var file in files)
+            for (int i = 0; i < files.Length; i++)
             {
+                var file = files[i];
                 if (string.IsNullOrEmpty(file))
                     continue;
                 string[] fs = file.Split('|');
-                infile = resPath + fs[0];  //
+                infile = resPath + fs[0];
                 outfile = dataPath + fs[0];
 
-                message = "正在解包文件:>" + fs[0];
-                Debug.Log("正在解包文件:>" + infile);
-                facade.SendMessageCommand(NotiConst.UPDATE_MESSAGE, message);
+                message = "正在解包:" + fs[0];
+                Debug.Log("正在解包:" + infile);
+                facade.SendMessageCommand(NotiConst.UPDATE_MESSAGE, new ProgressData(i / (float)files.Length, message));
 
                 string dir = Path.GetDirectoryName(outfile);
                 if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
@@ -122,7 +123,7 @@ namespace LuaFramework
                 yield return new WaitForEndOfFrame();
             }
             message = "解包完成!!!";
-            facade.SendMessageCommand(NotiConst.UPDATE_MESSAGE, message);
+            facade.SendMessageCommand(NotiConst.UPDATE_MESSAGE, new ProgressData(1, message));
             yield return new WaitForSeconds(0.1f);
 
             message = string.Empty;
@@ -184,8 +185,8 @@ namespace LuaFramework
                 if (canUpdate)
                 {   //本地缺少文件
                     Debug.Log(fileUrl);
-                    message = "downloading>>" + fileUrl;
-                    facade.SendMessageCommand(NotiConst.UPDATE_MESSAGE, message);
+                    message = "正在下载:" + f;
+                    facade.SendMessageCommand(NotiConst.UPDATE_MESSAGE, new ProgressData(i / (float)files.Length, message));
                     /*
                     www = new WWW(fileUrl); yield return www;
                     if (www.error != null) {
@@ -202,7 +203,7 @@ namespace LuaFramework
             yield return new WaitForEndOfFrame();
 
             message = "更新完成!!";
-            facade.SendMessageCommand(NotiConst.UPDATE_MESSAGE, message);
+            facade.SendMessageCommand(NotiConst.UPDATE_MESSAGE,new ProgressData(1,message) );
 
             OnResourceInited();
         }
@@ -210,7 +211,7 @@ namespace LuaFramework
         void OnUpdateFailed(string file)
         {
             string message = "更新失败!>" + file;
-            facade.SendMessageCommand(NotiConst.UPDATE_MESSAGE, message);
+            facade.SendMessageCommand(NotiConst.UPDATE_MESSAGE, new ProgressData(1,message));
         }
 
         /// <summary>

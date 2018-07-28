@@ -39,8 +39,7 @@ namespace LuaFramework
         static readonly object m_lockObject = new object();
         static Queue<ThreadEvent> events = new Queue<ThreadEvent>();
 
-        delegate void ThreadSyncEvent(NotiData data);
-        private ThreadSyncEvent m_SyncEvent;
+        private Action<NotiData> m_SyncEvent;
 
         void Awake()
         {

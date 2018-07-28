@@ -240,7 +240,12 @@ namespace LuaFramework
         public static string GetRelativePath()
         {
             if (Application.isEditor)
-                return "file://" + System.Environment.CurrentDirectory.Replace("\\", "/") + "/Assets/" + AppConst.AssetDir + "/";
+            {
+                if (!AppConst.UpdateMode)
+                    return "file://" + System.Environment.CurrentDirectory.Replace("\\", "/") + "/Assets/" + AppConst.AssetDir + "/";
+                else
+                    return "file:///" + DataPath;
+            }
             else if (Application.isMobilePlatform || Application.isConsolePlatform)
                 return "file:///" + DataPath;
             else // For standalone player.
@@ -351,7 +356,7 @@ namespace LuaFramework
         /// <summary>
         /// 执行Lua方法
         /// </summary>
-          public static void CallMethod(string module, string func)
+        public static void CallMethod(string module, string func)
         {
             var function = GetLuaFunction(module, func);
             if (function == null) return;
@@ -365,11 +370,11 @@ namespace LuaFramework
             function.Call(arg1);
         }
 
-          public static void CallMethod<T1,T2>(string module, string func, T1 arg1,T2 arg2)
+        public static void CallMethod<T1, T2>(string module, string func, T1 arg1, T2 arg2)
         {
             var function = GetLuaFunction(module, func);
             if (function == null) return;
-            function.Call(arg1,arg2);
+            function.Call(arg1, arg2);
         }
 
         private static LuaFunction GetLuaFunction(string module, string func)
