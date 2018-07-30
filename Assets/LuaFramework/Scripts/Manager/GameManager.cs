@@ -142,12 +142,11 @@ namespace LuaFramework
                 yield break;
             }
             string dataPath = Util.DataPath;  //数据目录
-            string url = AppConst.WebUrl;
+            string url = AppConst.WebUrl + LuaConst.osDir + "/";
             string message = string.Empty;
             string random = DateTime.Now.ToString("yyyymmddhhmmss");
             string listUrl = url + "files.txt?v=" + random;
             Debug.LogWarning("LoadUpdate---->>>" + listUrl);
-
             WWW www = new WWW(listUrl); yield return www;
             if (www.error != null)
             {
@@ -203,7 +202,7 @@ namespace LuaFramework
             yield return new WaitForEndOfFrame();
 
             message = "更新完成!!";
-            facade.SendMessageCommand(NotiConst.UPDATE_MESSAGE,new ProgressData(1,message) );
+            facade.SendMessageCommand(NotiConst.UPDATE_MESSAGE, new ProgressData(1, message));
 
             OnResourceInited();
         }
@@ -211,7 +210,7 @@ namespace LuaFramework
         void OnUpdateFailed(string file)
         {
             string message = "更新失败!>" + file;
-            facade.SendMessageCommand(NotiConst.UPDATE_MESSAGE, new ProgressData(1,message));
+            facade.SendMessageCommand(NotiConst.UPDATE_MESSAGE, new ProgressData(1, message));
         }
 
         /// <summary>

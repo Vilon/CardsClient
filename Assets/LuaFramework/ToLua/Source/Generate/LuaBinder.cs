@@ -9,6 +9,7 @@ public static class LuaBinder
 	{
 		float t = Time.realtimeSinceStartup;
 		L.BeginModule(null);
+		UIUtilsWrap.Register(L);
 		LuaDebugToolWrap.Register(L);
 		LuaValueInfoWrap.Register(L);
 		LuaInterface_DebuggerWrap.Register(L);

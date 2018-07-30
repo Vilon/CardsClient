@@ -1,8 +1,17 @@
 local transform;
 local gameObject;
 
-PromptPage = {};
+PromptPage = {
+	btnOpen = nil,
+	gridParent = nil,
+};
 local this = PromptPage;
+
+--初始化面板--
+function PromptPage.InitPanel()
+	this.btnOpen = transform:Find("Open").gameObject;
+	this.gridParent = transform:Find('ScrollView/Grid');
+end
 
 --启动事件--
 function PromptPage.Awake(obj)
@@ -11,14 +20,6 @@ function PromptPage.Awake(obj)
 
 	this.InitPanel();
 	logWarn("Awake lua--->>"..gameObject.name);
-end
-
---初始化面板--
-function PromptPage.InitPanel()
-	this.btnOpen = transform:Find("Open").gameObject;
-	print(this.btnOpen.name)
-	this.gridParent = transform:Find('ScrollView/Grid');
-	print(this.gridParent.name)
 end
 
 function PromptPage.Start()

@@ -18,7 +18,7 @@ end
 
 function PromptCtrl.Awake()
     logWarn("PromptCtrl.Awake--->>")
-    uiMgr:PushPage("Prompt",this.OnCreate)
+    uiMgr:PushPage("Prompt", this.OnCreate)
     this.TestPbc()
 end
 
@@ -26,7 +26,7 @@ end
 function PromptCtrl.OnCreate(obj)
     gameObject = obj.gameObject
     transform = obj.transform
-    prompt = obj;
+    prompt = obj
     obj:AddClick(PromptPage.btnOpen, this.OnClick)
     resMgr:LoadPrefab(AppConst.ResDir .. "prefabs/ui/page/promptitem.prefab", {"PromptItem"}, this.InitPanel)
 end
