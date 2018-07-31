@@ -52,7 +52,7 @@ public static class LuaIdeMenu
         typeof(UnityEngine.YieldInstruction),               //无需导出的类      
         typeof(UnityEngine.WaitForEndOfFrame),              //内部支持
         typeof(UnityEngine.WaitForFixedUpdate),
-        typeof(UnityEngine.WaitForSeconds),        
+        typeof(UnityEngine.WaitForSeconds),
         typeof(UnityEngine.Mathf),                          //lua层支持                
         //typeof(Plane),                                      
         //typeof(LayerMask),                                  
@@ -67,9 +67,9 @@ public static class LuaIdeMenu
         //typeof(RaycastHit),                                 
         typeof(TouchPhase),     
         //typeof(LuaInterface.LuaOutMetatable),               //手写支持
-        typeof(LuaInterface.NullObject),             
-        typeof(System.Array),                        
-        typeof(System.Reflection.MemberInfo),    
+        typeof(LuaInterface.NullObject),
+        typeof(System.Array),
+        typeof(System.Reflection.MemberInfo),
         typeof(System.Reflection.BindingFlags),
         typeof(LuaClient),
         typeof(LuaInterface.LuaFunction),
@@ -93,14 +93,13 @@ public static class LuaIdeMenu
         typeof(LuaInterface.LuaMethod),
         typeof(LuaInterface.LuaProperty),
         typeof(LuaInterface.LuaField),
-        typeof(LuaInterface.LuaConstructor),        
+        typeof(LuaInterface.LuaConstructor),
     };
 
-    private static bool beAutoGen = false;
     static List<ToLuaMenu.BindType> allTypes = new List<ToLuaMenu.BindType>();
 
-    
-   
+
+
 
     static void AutoAddBaseType(ToLuaMenu.BindType bt, bool beDropBaseType)
     {
@@ -199,12 +198,11 @@ public static class LuaIdeMenu
         return allTypes.ToArray();
     }
 
-    [MenuItem("LuaIde/LuaIde Api", false, 1)]
+    [MenuItem("Lua/LuaIde Api", false, 1)]
     public static void GenerateClassWraps()
     {
-        if (!beAutoGen && EditorApplication.isCompiling)
+        if (!ToLuaMenu.beAutoGen && EditorApplication.isCompiling)
         {
-            
             EditorUtility.DisplayDialog("警告", "请等待编辑器完成编译再执行此功能", "确定");
             return;
         }
@@ -215,32 +213,33 @@ public static class LuaIdeMenu
             Directory.CreateDirectory(CustomSettings.saveDir);
         }
         List<ToLuaMenu.BindType> gtlist = new List<ToLuaMenu.BindType>(){
-        
-            CustomSettings._GT(typeof(Vector3)), 
-            CustomSettings._GT(typeof(Vector2)), 
-            CustomSettings._GT(typeof(Vector4)), 
-            CustomSettings._GT(typeof(Color)), 
-            CustomSettings._GT(typeof(Quaternion)), 
-            CustomSettings._GT(typeof(Ray)), 
-            CustomSettings._GT(typeof(Bounds)), 
-            CustomSettings._GT(typeof(Touch)), 
-            CustomSettings._GT(typeof(RaycastHit)), 
-            CustomSettings._GT(typeof(LayerMask)), 
-        
+
+            CustomSettings._GT(typeof(Vector3)),
+            CustomSettings._GT(typeof(Vector2)),
+            CustomSettings._GT(typeof(Vector4)),
+            CustomSettings._GT(typeof(Color)),
+            CustomSettings._GT(typeof(Quaternion)),
+            CustomSettings._GT(typeof(Ray)),
+            CustomSettings._GT(typeof(Bounds)),
+            CustomSettings._GT(typeof(Touch)),
+            CustomSettings._GT(typeof(RaycastHit)),
+            CustomSettings._GT(typeof(LayerMask)),
+
         };
-        for(int i =0; i < CustomSettings.customTypeList.Length;i++){
+        for (int i = 0; i < CustomSettings.customTypeList.Length; i++)
+        {
             gtlist.Add(CustomSettings.customTypeList[i]);
         }
-     
+
 
         allTypes.Clear();
-       ToLuaMenu.BindType[] typeList = gtlist.ToArray(); 
+        ToLuaMenu.BindType[] typeList = gtlist.ToArray();
 
         ToLuaMenu.BindType[] list = GenBindTypes(typeList);
         LuaIdeExport.allTypes.AddRange(baseType);
 
         for (int i = 0; i < list.Length; i++)
-        {            
+        {
             LuaIdeExport.allTypes.Add(list[i].type);
         }
         StringBuilder luasb = new StringBuilder();
@@ -260,12 +259,13 @@ public static class LuaIdeMenu
         }
         foreach (LuaIdeInfo luainfo in LuaIdeInfo.luaInfos)
         {
-            if (luainfo.tableName != null) {
+            if (luainfo.tableName != null)
+            {
                 luasb.AppendLine(luainfo.toStr());
             }
-            
+
         }
-       
+
         DirectoryInfo dirinfo = new DirectoryInfo(Application.dataPath);
         string dir = dirinfo.FullName + "/luaIde/";
         if (!Directory.Exists(dir))
@@ -280,11 +280,8 @@ public static class LuaIdeMenu
             textWriter.Close();
         }
         Debug.Log("Api 创建成功," + filename);
-       LuaIdeExport.allTypes.Clear();
-        allTypes.Clear();        
+        LuaIdeExport.allTypes.Clear();
+        allTypes.Clear();
         AssetDatabase.Refresh();
     }
-
-    
-   
 }

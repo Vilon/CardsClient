@@ -1,32 +1,27 @@
-local transform;
-local gameObject;
+--Generate by UITools, Do not Edit!
+
+local transform
 
 PromptPage = {
-	btnOpen = nil,
-	gridParent = nil,
-};
-local this = PromptPage;
+    openImage = nil,
+    openButton = nil,
+    opennameText = nil,
+    scrollviewImage = nil,
+    gridImage = nil,
+    gridGridLayoutGroup = nil
+}
+local this = PromptPage
 
---初始化面板--
-function PromptPage.InitPanel()
-	this.btnOpen = transform:Find("Open").gameObject;
-	this.gridParent = transform:Find('ScrollView/Grid');
+function this.InitPanel()
+    this.opennameText = transform:Find("Open/OpenName").gameObject:GetComponent("Text")
+    this.openImage = transform:Find("Open").gameObject:GetComponent("Image")
+    this.openButton = transform:Find("Open").gameObject:GetComponent("Button")
+    this.gridImage = transform:Find("ScrollView/Grid").gameObject:GetComponent("Image")
+    this.gridGridLayoutGroup = transform:Find("ScrollView/Grid").gameObject:GetComponent("GridLayoutGroup")
+    this.scrollviewImage = transform:Find("ScrollView").gameObject:GetComponent("Image")
 end
 
---启动事件--
-function PromptPage.Awake(obj)
-	gameObject = obj;
-	transform = obj.transform;
-
-	this.InitPanel();
-	logWarn("Awake lua--->>"..gameObject.name);
-end
-
-function PromptPage.Start()
-	-- body
-end
-
---单击事件--
-function PromptPage.OnDestroy()
-	logWarn("OnDestroy---->>>");
+function this.Awake(obj)
+    transform = obj.transform
+    this.InitPanel()
 end

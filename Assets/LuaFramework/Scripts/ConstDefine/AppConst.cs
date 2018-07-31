@@ -11,7 +11,7 @@ namespace LuaFramework
         /// 如果不是编辑器,直接返回true
         /// 防止打包时忘记更改
         /// </summary>
-        private const bool updateMode = true;                       //更新模式
+        private const bool updateMode = false;                       //更新模式
         public static bool UpdateMode
         {
             get

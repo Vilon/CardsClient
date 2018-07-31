@@ -64,7 +64,7 @@ namespace LuaFramework
         protected List<UIPageBase> OpenPages = new List<UIPageBase>();
         protected List<UIPageBase> LoadedPages = new List<UIPageBase>();
         private Queue<string> dialogQueue = new Queue<string>();
-        private List<UIDialogBase> cacheMsgList = new List<UIDialogBase>();
+        private List<UIMsgBase> cacheMsgList = new List<UIMsgBase>();
 
         [HideInInspector]
         public UIPageBase ActivePage = null;
@@ -89,12 +89,20 @@ namespace LuaFramework
             return go;
         }
 
-        public void Cache(UIDialogBase dialog, bool isOk)
+        public void CacheDialog(UIDialogBase dialog, bool isOk)
         {
             if (null != dialog)
             {
                 openedDialogList.Remove(dialog);
                 cacheDialogList.Add(dialog);
+            }
+        }
+
+        public void CacheMsg(UIMsgBase dialog, bool isOk)
+        {
+            if (null != dialog && !cacheMsgList.Contains(dialog))
+            {
+                cacheMsgList.Add(dialog);
             }
         }
 
@@ -309,9 +317,9 @@ namespace LuaFramework
             }
         }
 
-        public void LoadMsg(string key, System.Action<UIDialogBase> callback)
+        public void LoadMsg(string key, System.Action<UIMsgBase> callback)
         {
-            UIDialogBase dialog = FindMsgInCache(key);
+            UIMsgBase dialog = FindMsgInCache(key);
 
             if (dialog == null)
             {
@@ -334,7 +342,7 @@ namespace LuaFramework
                         }
                         if (newSceneGameObject != null)
                         {
-                            dialog = newSceneGameObject.GetComponent<UIDialogBase>();
+                            dialog = newSceneGameObject.GetComponent<UIMsgBase>();
                             dialog.InitializeScene();
                             callback(dialog);
                         }
@@ -368,9 +376,9 @@ namespace LuaFramework
             return null;
         }
 
-        UIDialogBase FindMsgInCache(string key)
+        UIMsgBase FindMsgInCache(string key)
         {
-            foreach (UIDialogBase dialog in cacheMsgList)
+            foreach (UIMsgBase dialog in cacheMsgList)
             {
                 if (dialog.name == key)
                 {
@@ -404,7 +412,7 @@ namespace LuaFramework
 
         public void PopMsg(string msg)
         {
-            UIDialogBase dialog = FindMsgInCache(msg);
+            UIMsgBase dialog = FindMsgInCache(msg);
             dialog.OnSceneActivated();
         }
     }

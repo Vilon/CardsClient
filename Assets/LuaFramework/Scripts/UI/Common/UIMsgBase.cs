@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 
 [ExecuteInEditMode]
-public class UIDialogBase : LuaFramework.LuaBehaviour {
+public class UIMsgBase : LuaFramework.LuaBehaviour {
 
     [HideInInspector]
     public bool UseBoxCollider = true;
@@ -34,7 +34,7 @@ public class UIDialogBase : LuaFramework.LuaBehaviour {
 
     void SetParent()
     {
-        var root = GameObject.Find("UIDialog");
+        var root = GameObject.Find("UIMsg");
         if (null != root)
         {
             Transform parent = this.transform.parent;
@@ -125,7 +125,7 @@ public class UIDialogBase : LuaFramework.LuaBehaviour {
     public void OnExitFinish(bool isOk)
     {
         OnSceneDeactivated();
-        uiManager.CacheDialog(this, isOk);
+        uiManager.CacheMsg(this, isOk);
     }
 
     public void Clear(MonoBehaviour mono)

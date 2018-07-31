@@ -657,29 +657,7 @@ LuaDebugger.event = {
 	C2S_DebugXpCall = 20,
 	S2C_DebugClose = 21
 }
-function print(...)
-	if(LuaDebugger.isProntToConsole == 1 or LuaDebugger.isProntToConsole == 3) then
-		debugger_print(...)
-	end
-	if(LuaDebugger.isProntToConsole == 1 or LuaDebugger.isProntToConsole == 2) then
-		if(debug_server) then
-			local arg = {...}    --这里的...和{}符号中间需要有空格号，否则会出错  
-			local str = ""
-		 	if(#arg==0) then
-				arg = { "nil" }
-			end
-			for k, v in pairs(arg) do
-				str = str .. tostring(v) .. "\t"
-			end
-			local sendMsg = {
-				event = LuaDebugger.event.C2S_LuaPrint,
-				data = {msg = ZZBase64.encode( str),type=1}
-			}
-			local sendStr = json.encode(sendMsg)
-			debug_server:send(sendStr .. "__debugger_k0204__")
-		end
-	end
-end
+
 function luaIdePrintWarn( ... )
 	if(LuaDebugger.isProntToConsole == 1 or LuaDebugger.isProntToConsole == 3) then
 		debugger_print(...)

@@ -33,6 +33,7 @@ public class DelegateFactory
 		dict.Add(typeof(UnityEngine.RectTransform.ReapplyDrivenProperties), factory.UnityEngine_RectTransform_ReapplyDrivenProperties);
 		dict.Add(typeof(System.Action<UIPageBase>), factory.System_Action_UIPageBase);
 		dict.Add(typeof(System.Action<UIDialogBase>), factory.System_Action_UIDialogBase);
+		dict.Add(typeof(System.Action<UIMsgBase>), factory.System_Action_UIMsgBase);
 		dict.Add(typeof(System.Action<UnityEngine.AudioClip>), factory.System_Action_UnityEngine_AudioClip);
 		dict.Add(typeof(System.Action<NotiData>), factory.System_Action_NotiData);
 		dict.Add(typeof(System.Action<UnityEngine.Object[]>), factory.System_Action_UnityEngine_Objects);
@@ -53,6 +54,7 @@ public class DelegateFactory
 		DelegateTraits<UnityEngine.RectTransform.ReapplyDrivenProperties>.Init(factory.UnityEngine_RectTransform_ReapplyDrivenProperties);
 		DelegateTraits<System.Action<UIPageBase>>.Init(factory.System_Action_UIPageBase);
 		DelegateTraits<System.Action<UIDialogBase>>.Init(factory.System_Action_UIDialogBase);
+		DelegateTraits<System.Action<UIMsgBase>>.Init(factory.System_Action_UIMsgBase);
 		DelegateTraits<System.Action<UnityEngine.AudioClip>>.Init(factory.System_Action_UnityEngine_AudioClip);
 		DelegateTraits<System.Action<NotiData>>.Init(factory.System_Action_NotiData);
 		DelegateTraits<System.Action<UnityEngine.Object[]>>.Init(factory.System_Action_UnityEngine_Objects);
@@ -73,6 +75,7 @@ public class DelegateFactory
 		TypeTraits<UnityEngine.RectTransform.ReapplyDrivenProperties>.Init(factory.Check_UnityEngine_RectTransform_ReapplyDrivenProperties);
 		TypeTraits<System.Action<UIPageBase>>.Init(factory.Check_System_Action_UIPageBase);
 		TypeTraits<System.Action<UIDialogBase>>.Init(factory.Check_System_Action_UIDialogBase);
+		TypeTraits<System.Action<UIMsgBase>>.Init(factory.Check_System_Action_UIMsgBase);
 		TypeTraits<System.Action<UnityEngine.AudioClip>>.Init(factory.Check_System_Action_UnityEngine_AudioClip);
 		TypeTraits<System.Action<NotiData>>.Init(factory.Check_System_Action_NotiData);
 		TypeTraits<System.Action<UnityEngine.Object[]>>.Init(factory.Check_System_Action_UnityEngine_Objects);
@@ -93,6 +96,7 @@ public class DelegateFactory
 		StackTraits<UnityEngine.RectTransform.ReapplyDrivenProperties>.Push = factory.Push_UnityEngine_RectTransform_ReapplyDrivenProperties;
 		StackTraits<System.Action<UIPageBase>>.Push = factory.Push_System_Action_UIPageBase;
 		StackTraits<System.Action<UIDialogBase>>.Push = factory.Push_System_Action_UIDialogBase;
+		StackTraits<System.Action<UIMsgBase>>.Push = factory.Push_System_Action_UIMsgBase;
 		StackTraits<System.Action<UnityEngine.AudioClip>>.Push = factory.Push_System_Action_UnityEngine_AudioClip;
 		StackTraits<System.Action<NotiData>>.Push = factory.Push_System_Action_NotiData;
 		StackTraits<System.Action<UnityEngine.Object[]>>.Push = factory.Push_System_Action_UnityEngine_Objects;
@@ -1125,6 +1129,63 @@ public class DelegateFactory
 	}
 
 	void Push_System_Action_UIDialogBase(IntPtr L, System.Action<UIDialogBase> o)
+	{
+		ToLua.Push(L, o);
+	}
+
+	class System_Action_UIMsgBase_Event : LuaDelegate
+	{
+		public System_Action_UIMsgBase_Event(LuaFunction func) : base(func) { }
+		public System_Action_UIMsgBase_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public void Call(UIMsgBase param0)
+		{
+			func.BeginPCall();
+			func.Push(param0);
+			func.PCall();
+			func.EndPCall();
+		}
+
+		public void CallWithSelf(UIMsgBase param0)
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.Push(param0);
+			func.PCall();
+			func.EndPCall();
+		}
+	}
+
+	public System.Action<UIMsgBase> System_Action_UIMsgBase(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			System.Action<UIMsgBase> fn = delegate(UIMsgBase param0) { };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			System_Action_UIMsgBase_Event target = new System_Action_UIMsgBase_Event(func);
+			System.Action<UIMsgBase> d = target.Call;
+			target.method = d.Method;
+			return d;
+		}
+		else
+		{
+			System_Action_UIMsgBase_Event target = new System_Action_UIMsgBase_Event(func, self);
+			System.Action<UIMsgBase> d = target.CallWithSelf;
+			target.method = d.Method;
+			return d;
+		}
+	}
+
+	bool Check_System_Action_UIMsgBase(IntPtr L, int pos)
+	{
+		return TypeChecker.CheckDelegateType(typeof(System.Action<UIMsgBase>), L, pos);
+	}
+
+	void Push_System_Action_UIMsgBase(IntPtr L, System.Action<UIMsgBase> o)
 	{
 		ToLua.Push(L, o);
 	}

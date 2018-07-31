@@ -16,8 +16,8 @@ function PromptCtrl.New()
     return this
 end
 
-function PromptCtrl.Awake()
-    logWarn("PromptCtrl.Awake--->>")
+function PromptCtrl.Show()
+    logWarn("PromptCtrl.Show--->>")
     uiMgr:PushPage("Prompt", this.OnCreate)
     this.TestPbc()
 end
@@ -27,22 +27,22 @@ function PromptCtrl.OnCreate(obj)
     gameObject = obj.gameObject
     transform = obj.transform
     prompt = obj
-    obj:AddClick(PromptPage.btnOpen, this.OnClick)
-    resMgr:LoadPrefab(AppConst.ResDir .. "prefabs/ui/page/promptitem.prefab", {"PromptItem"}, this.InitPanel)
+    obj:AddClick(PromptPage.openButton, this.OnClick)
+    resMgr:LoadPrefab(AppConst.ResDir .. "prefabs/ui/page/promptitem.prefab", {"PromptItem"}, this.Init)
 end
 
 --初始化面板--
-function PromptCtrl.InitPanel(objs)
+function PromptCtrl.Init(objs)
     print(objs[0].name)
     local count = 1000
-    local parent = PromptPage.gridParent
+    local parent = PromptPage.gridGridLayoutGroup.transform
     for i = 1, count do
         local go = newObject(objs[0])
         go.name = "Item" .. tostring(i)
         go.transform:SetParent(parent)
         go.transform.localScale = Vector3.one
         go.transform.localPosition = Vector3.zero
-        prompt:AddClick(go, this.OnItemClick)
+        prompt:AddClick(go:GetComponent("Button"), this.OnItemClick)
 
         local label = go.transform:Find("Text")
         label:GetComponent("Text").text = tostring(i)

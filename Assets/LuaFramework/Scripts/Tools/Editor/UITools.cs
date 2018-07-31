@@ -12,17 +12,15 @@ using System.IO;
 /// </summary>
 public class UITools : Editor
 {
-    public const string prefabPath = "Assets/wxkj/Resources/Prefabs/UI/";
-
-    public const string detailPath = "/wxkj/Scripts/UI/UIDetail/";
-    public const string tempPath = "/wxkj/Editor/Templete/";
-    public const string exName = "Detail";
+    public const string prefabPath = "Assets/Res/Prefabs/UI/";
+    public const string tempPath = "/Res/UITemplate/";
+    public const string detailPath = "/LuaFramework/Lua/View/";
 
     private static List<string> attrList = new List<string>();
     private static List<string> methodList = new List<string>();
     private static HashSet<string> uniName = new HashSet<string>();
 
-    private static string[] ignoreList = new string[] { "Outline" };
+    private static string[] ignoreList = new string[] { "Outline", "ContentSizeFitter", "ScrollRect", "Mask" };
 
     static bool IsIgnore(string name)
     {
@@ -36,29 +34,18 @@ public class UITools : Editor
         return false;
     }
 
-    [MenuItem("Tools/生成UI #&C", false, 1)]
+    [MenuItem("Tools/生成UI", false, 1)]
     static public void CreateUIPage()
     {
         GameObject active = UnityEditor.Selection.activeGameObject;
 
-        if (null == active || (!active.name.EndsWith("Page") && !active.name.EndsWith("Dialog") && !active.name.EndsWith("Sub")))
+        if (null == active || (!active.name.EndsWith("Page") && !active.name.EndsWith("Dialog") && !active.name.EndsWith("Msg")))
         {
-            EditorUtility.DisplayDialog("提示！", "请在Hierarchy面板选择一个UI文件(Page或者Sub)。", "是");
+            EditorUtility.DisplayDialog("提示！", "请在Hierarchy面板选择一个UI文件(Page或者Dialog)。", "是");
             return;
         }
 
-        if (active.name.EndsWith("Page"))
-        {
-            CreateUI("UIPageTemplet");
-        }
-        else if (active.name.EndsWith("Dialog"))
-        {
-            CreateUI("UIDialogTemplet");
-        }
-        else
-        {
-            CreateUI("UISubTemplet");
-        }
+        CreateUI("UIPageTemplet");
     }
 
     static void CreateUI(string templetName)
@@ -69,7 +56,7 @@ public class UITools : Editor
 
         GameObject active = UnityEditor.Selection.activeGameObject;
 
-        string scriptName = active.name + exName;
+        string scriptName = active.name;
 
         Transform root = active.transform;
 
@@ -86,7 +73,7 @@ public class UITools : Editor
         {
             GetComponents(child, "");
         }
-        CreateDetail(scriptName);
+        //CreateDetail(scriptName);
 
         //GetMethod(root, root.name);
 
@@ -122,10 +109,17 @@ public class UITools : Editor
             tempMethod += method;
         }
 
+        string tempContent = "";
+        foreach (string attr in attrList)
+        {
+            tempContent += attr;
+        }
+
         string temp = GetTemplete(templeteName);
         temp = temp.Replace("ScriptName", scriptName);
-        temp = temp.Replace("TempletMethod", tempMethod);
-        string outPutFile = Application.dataPath + detailPath + scriptName + "Base.cs";
+        temp = temp.Replace("TempletMethod2", tempMethod);
+        temp = temp.Replace("TempletMethod1", tempContent);
+        string outPutFile = Application.dataPath + detailPath + scriptName + ".lua";
         Save(outPutFile, temp);
         return outPutFile;
     }
@@ -181,29 +175,24 @@ public class UITools : Editor
                 int count = map[tpe];
                 if (count > 1)
                 {
-                    attrList.Add("    public " + tpe + "[] " + transName + "_" + name + "s;\n");
+                    attrList.Add("   " + transName.ToLower() + name + "s = nil,\n");
                 }
                 else
                 {
-                    attrList.Add("    public " + tpe + " " + transName + "_" + name + ";\n");
+                    attrList.Add("    " + transName.ToLower() + name + " = nil,\n");
                 }
             }
         }
-        
+
         string thisPath = root.name;
         if (string.IsNullOrEmpty(parentPath) == false)
         {
             thisPath = parentPath + "/" + root.name;
         }
-
-        // UISubBase subUI = root.GetComponent<UISubBase>();
-        // if (null == subUI)
-        // {
-        //     foreach (Transform child in root)
-        //     {
-        //         GetComponents(child, thisPath);
-        //     }
-        // }
+        foreach (Transform child in root)
+        {
+            GetComponents(child, thisPath);
+        }
 
         GetMethod(root, thisPath);
     }
@@ -219,7 +208,7 @@ public class UITools : Editor
             {
                 tpe = tpe.Substring(tpe.LastIndexOf('.') + 1);
             }
-            
+
             if (map.ContainsKey(tpe))
             {
                 int count = map[tpe];
@@ -259,12 +248,12 @@ public class UITools : Editor
             if (count > 1)
             {
                 //methodList.Add("        detail." + transName + "_" + name + "s = detail." + transName + ".GetComponents<" + tpe + ">();\n");
-                methodList.Add("        detail." + transName + "_" + name + "s = transform.Find(\"" + thisPath + "\").gameObject.GetComponents<" + tpe + ">();\n");
+                methodList.Add("    this." + transName.ToLower() + name + "s = transform:Find(\"" + thisPath + "\").gameObject:GetComponents(\"" + tpe + "\")\n");
             }
             else
             {
-                //methodList.Add("        detail." + transName + "_" + name + " = detail." + transName + ".GetComponent<" + tpe + ">();\n");
-                methodList.Add("        detail." + transName + "_" + name + " = transform.Find(\"" + thisPath + "\").gameObject.GetComponent<" + tpe + ">();\n");
+                //methodList.Add("        detail." + transName + "_" + name + " = detail." + transName + ".GetComponent<" + tpe + ">();\n")
+                methodList.Add("    this." + transName.ToLower() + name + " = transform:Find(\"" + thisPath + "\").gameObject:GetComponent(\"" + tpe + "\")\n");
             }
         }
     }

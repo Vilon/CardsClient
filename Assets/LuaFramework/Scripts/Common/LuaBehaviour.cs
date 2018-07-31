@@ -9,48 +9,56 @@ namespace LuaFramework
 {
     public class LuaBehaviour : View
     {
-
-        private Dictionary<string, LuaFunction> buttons = new Dictionary<string, LuaFunction>();
+        string panel;
+        string control;
+        private Dictionary<Button, LuaFunction> buttons = new Dictionary<Button, LuaFunction>();
 
         protected virtual void Awake()
         {
-            name = name.Replace("(Clone)", string.Empty);
-            Util.CallMethod(name, "Awake", gameObject);
+            panel = name.Replace("(Clone)", string.Empty);
+            if (name.Contains("Page"))
+                control = name.Replace("Page(Clone)", "Ctrl");
+            if (name.Contains("Dialog"))
+                control = name.Replace("Dialog(Clone)", "Ctrl");
+            if (name.Contains("Msg"))
+                control = name.Replace("Msg(Clone)", "Ctrl");
+            Util.CallMethod(panel, "Awake", gameObject);
+            Util.CallMethod(control, "Awake", gameObject);
         }
 
         protected virtual void Start()
         {
-            Util.CallMethod(name, "Start");
+            Util.CallMethod(control, "Start");
         }
 
         protected virtual void OnEnable()
         {
-            Util.CallMethod(name, "OnEnable");
+            Util.CallMethod(control, "OnEnable");
         }
 
         protected virtual void OnDisable()
         {
-            Util.CallMethod(name, "OnDisable");
+            Util.CallMethod(control, "OnDisable");
         }
 
         protected virtual void OnClick()
         {
-            Util.CallMethod(name, "OnClick");
+            Util.CallMethod(control, "OnClick");
         }
 
         protected virtual void OnClickEvent(GameObject go)
         {
-            Util.CallMethod(name, "OnClick", go);
+            Util.CallMethod(control, "OnClick", go);
         }
 
         /// <summary>
         /// 添加单击事件
         /// </summary>
-        public void AddClick(GameObject go, LuaFunction luafunc)
+        public void AddClick(Button go, LuaFunction luafunc)
         {
             if (go == null || luafunc == null) return;
-            buttons.Add(go.name, luafunc);
-            go.GetComponent<Button>().onClick.AddListener(
+            buttons.Add(go, luafunc);
+            go.onClick.AddListener(
                 delegate ()
                 {
                     luafunc.Call(go);
@@ -62,15 +70,15 @@ namespace LuaFramework
         /// 删除单击事件
         /// </summary>
         /// <param name="go"></param>
-        public void RemoveClick(GameObject go)
+        public void RemoveClick(Button go)
         {
             if (go == null) return;
             LuaFunction luafunc = null;
-            if (buttons.TryGetValue(go.name, out luafunc))
+            if (buttons.TryGetValue(go, out luafunc))
             {
                 luafunc.Dispose();
                 luafunc = null;
-                buttons.Remove(go.name);
+                buttons.Remove(go);
             }
         }
 
@@ -94,11 +102,14 @@ namespace LuaFramework
         {
             ClearClick();
 #if ASYNC_MODE
-            string abName = name.ToLower();
-            ResManager.UnloadAssetBundle(abName);
+            if (Application.isPlaying)
+            {
+                string abName = panel.ToLower();
+                ResManager.UnloadAssetBundle(abName);
+            }
 #endif
             Util.ClearMemory();
-            Debug.Log("~" + name + " was destroy!");
+            Debug.Log("~" + panel + " was destroy!");
         }
     }
 }

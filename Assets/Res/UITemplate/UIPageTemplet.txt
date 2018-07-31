@@ -1,0 +1,17 @@
+﻿--Generate by UITools, Do not Edit!
+
+local transform
+
+ScriptName = {
+TempletMethod1
+}
+local this = ScriptName
+
+function this.InitPanel()
+TempletMethod2
+end
+
+function this.Awake(obj)
+    transform = obj.transform
+    this.InitPanel()
+end

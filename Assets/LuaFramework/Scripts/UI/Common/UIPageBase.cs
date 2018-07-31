@@ -35,7 +35,7 @@ public class UIPageBase : LuaFramework.LuaBehaviour
 
     void SetParent()
     {
-        var root = uiManager.PageRoot;
+        var root = GameObject.Find("UIPage");
         if (null != root)
         {
             Transform parent = this.transform.parent;

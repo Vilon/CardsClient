@@ -26,7 +26,7 @@ end
 --初始化完成，发送链接服务器信息--
 function Game.OnInitOK()
     AppConst.SocketPort = 20000;
-    AppConst.SocketAddress = "192.168.0.2";
+    AppConst.SocketAddress = "192.168.0.5";
     networkMgr:SendConnect();
     
     --注册LuaView--
@@ -34,7 +34,7 @@ function Game.OnInitOK()
     CtrlManager.Init();
     local ctrl = CtrlManager.GetCtrl(CtrlNames.Prompt);
     if ctrl ~= nil then
-        ctrl:Awake();
+        ctrl:Show();
     end
        
     logWarn('LuaFramework InitOK--->>>');
