@@ -22,7 +22,3 @@ UnityPackageManager/
 Temp/
 .DS_Store
 .vscode/
-Assets/LuaFramework/ToLua/Source/Generate/DelegateFactory.cs.meta
-Assets/LuaFramework/ToLua/Source/Generate/DelegateFactory.cs
-Assets/LuaFramework/ToLua/Source/Generate/LuaBinder.cs
-Assets/LuaFramework/ToLua/Source/Generate/LuaBinder.cs.meta
